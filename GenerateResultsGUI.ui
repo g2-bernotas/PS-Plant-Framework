@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GenerateResults</class>
+ <widget class="QMainWindow" name="GenerateResults">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>767</width>
+    <height>324</height>
+   </rect>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::NoFocus</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Generate Results</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../brl_logo.gif</normaloff>../brl_logo.gif</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>40</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>The top level directory containing all the sessions</string>
+    </property>
+    <property name="text">
+     <string>Root Directory</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>70</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>The first session to process</string>
+    </property>
+    <property name="text">
+     <string>Start Session</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>160</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>The location of the text file giving the regions of interest for the plants</string>
+    </property>
+    <property name="text">
+     <string>Mask Folder</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>100</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>The last session to process</string>
+    </property>
+    <property name="text">
+     <string>End Session</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>190</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>The numbers of the plants to process (starting at 0)</string>
+    </property>
+    <property name="text">
+     <string>Plant numbers</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>220</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Where to output the resultant masks</string>
+    </property>
+    <property name="text">
+     <string>CSV Output Dir</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edtRootDir">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>36</y>
+      <width>351</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>The top level directory containing all the sessions</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edtMaskDir">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>160</y>
+      <width>351</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>The location of the masks created by MaskGenGUI</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edtPlants">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>190</y>
+      <width>221</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>The numbers of the plants to process (starting at 0)</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edtOutputDir">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>220</y>
+      <width>351</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Where to output the resultant masks</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cmbStartSess">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>67</y>
+      <width>221</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>The first session to process</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cmbEndSess">
+    <property name="geometry">
+     <rect>
+      <x>131</x>
+      <y>98</y>
+      <width>221</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>The last session to process</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnRootSel">
+    <property name="geometry">
+     <rect>
+      <x>493</x>
+      <y>34</y>
+      <width>31</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnMaskSel">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>160</y>
+      <width>31</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnOutputSel">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>220</y>
+      <width>31</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>741</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Data settings</string>
+    </property>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>110</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>The location of the text file giving the regions of interest for the plants</string>
+     </property>
+     <property name="text">
+      <string>ROI File</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="edtROIPath">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>110</y>
+       <width>351</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>The location of the text file giving the regions of interest for the plants</string>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnROISel">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>110</y>
+       <width>31</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="grpBoxLSType">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>50</y>
+       <width>161</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Light Source Type</string>
+     </property>
+     <widget class="QRadioButton" name="rdoVIS">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>41</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>VIS</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="rdoNIR">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>20</y>
+        <width>82</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::WheelFocus</enum>
+      </property>
+      <property name="text">
+       <string>NIR</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="rdoVISNIR">
+      <property name="geometry">
+       <rect>
+        <x>93</x>
+        <y>20</y>
+        <width>70</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>VISNIR</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="geometry">
+      <rect>
+       <x>530</x>
+       <y>20</y>
+       <width>201</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Override Settings</string>
+     </property>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>14</x>
+        <y>85</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Camera height (cm)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>14</x>
+        <y>45</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Focal length (mm)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>14</x>
+        <y>65</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Sensor size (mm)</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="cbOverride">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>171</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allows the settings in psconfig.properties to be overridden easily. You should not need to change&lt;br/&gt; this, as the psconfig.properties values should be correct (otherwise the normals will not have&lt;br/&gt; been estimated correctly in any case). &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="statusTip">
+       <string/>
+      </property>
+      <property name="text">
+       <string>Override psconfig.properties</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="edtFocalLength">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>118</x>
+        <y>40</y>
+        <width>71</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>The focal length of the lens used</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="edtSensorSize">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>118</x>
+        <y>60</y>
+        <width>71</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>The sensor size (mm) of the camera (can be found by searching online, PG is 8x8)</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="edtCamHeight">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>118</x>
+        <y>80</y>
+        <width>71</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>The height of the camera above the object</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="btnProcess">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>270</y>
+      <width>70</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Process</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="cbShowMasks">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>270</y>
+      <width>81</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will show a window of the leaf mask, blade mask and petiole mask&lt;br/&gt;as an indication of how accurately it is segmenting. This is only really useful when individual leaf labels are provided as masks.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>Show masks</string>
+    </property>
+   </widget>
+   <zorder>groupBox</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label_3</zorder>
+   <zorder>label_4</zorder>
+   <zorder>label_5</zorder>
+   <zorder>label_6</zorder>
+   <zorder>edtRootDir</zorder>
+   <zorder>edtMaskDir</zorder>
+   <zorder>edtPlants</zorder>
+   <zorder>edtOutputDir</zorder>
+   <zorder>cmbStartSess</zorder>
+   <zorder>cmbEndSess</zorder>
+   <zorder>btnRootSel</zorder>
+   <zorder>btnMaskSel</zorder>
+   <zorder>btnOutputSel</zorder>
+   <zorder>btnProcess</zorder>
+   <zorder>cbShowMasks</zorder>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <tabstops>
+  <tabstop>edtRootDir</tabstop>
+  <tabstop>btnRootSel</tabstop>
+  <tabstop>cmbStartSess</tabstop>
+  <tabstop>cmbEndSess</tabstop>
+  <tabstop>edtMaskDir</tabstop>
+  <tabstop>btnMaskSel</tabstop>
+  <tabstop>edtPlants</tabstop>
+  <tabstop>edtOutputDir</tabstop>
+  <tabstop>btnOutputSel</tabstop>
+  <tabstop>btnProcess</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
