@@ -1,4 +1,4 @@
-## PS-Plant data processing software 
+# PS-Plant data processing software 
 For "A photometric stereo-based 3D imaging system using computer vision and deep learning for tracking plant growth" paper.
 
 ![PS-Plant Framework](assets/PS-PlantFramework.png)
@@ -14,15 +14,15 @@ This is an implementation of PS-Plant software in Python 3.5. The software has s
 
 The repository includes:
 * Source code for PS-Plant data analysis using python-based GUI applications (Arduino (*.ino) and Python (*.py) scripts, and Qt GUI applications (*.ui))
-* Modified Mask R-CNN code for Arabidopsis leaf segmentation (adapted from [Matterport](https://github.com/matterport/Mask_RCNN), original [Mask R-CNN paper by He et al. (2017)](https://arxiv.org/pdf/1703.06870.pdf))
+* Modified Mask R-CNN code for Arabidopsis leaf segmentation (adapted from [Matterport](https://github.com/matterport/Mask_RCNN), original [Mask R-CNN paper](https://arxiv.org/pdf/1703.06870.pdf))
 * Requirements.txt file listing the required packages for successfully running the PS-Plant software
 * This repository is also supplemented with [test data](https://bit.ly/2IBRzKJ):
-	* Pre-trained weights for leaf segmentation using grayscale image modality and Mask R-CNN architecture
+	* Pre-trained Mask R-CNN weights for leaf segmentation using grayscale images
 	* PS-Plant data acquisitions (10) of Arabidopsis plants
 	* Results expected after running the software with the provided data
-	* Dataset of manually annotated Arabidopsis leaves (available from [here](https://datashare.is.ed.ac.uk/handle/10283/3200)
+	* Dataset of manually annotated Arabidopsis leaves (available from [here](https://datashare.is.ed.ac.uk/handle/10283/3200))
 
-## Dependencies
+# Dependencies
 * Python 3.5
 * Numpy
 * OpenCV
@@ -41,18 +41,18 @@ The repository includes:
 * [FlyCapture 2.13.3.31 SDK](https://www.ptgrey.com/support/downloads)
 * [PyCapture 2.11.425](https://www.ptgrey.com/support/downloads)
 
-## Installation 
+# Installation 
 1. Clone this reporitory
 2. Install dependencies
 	``` bash
-	pip3 install -r requirements.txt
+	pip install -r requirements.txt
 	```
 3. Download pip unavailable dependencies:
 	a) FlyCapture 2.13.3.31 SDK (Grasshopper3 GS3-U3-41C6NIR-C)
 	b) PyCapture 2.11.425 (Grasshopper3 GS3-U3-41C6NIR-C)
 4. Install pip unavailable dependencies
 5. Download test [data](https://bit.ly/2IBRzKJ), which includes:
-	a) RawData
+	* RawData
 		* 10 PS-Plant acquisitions 
 		* 10 frames of cropped Plant 0 (grayscale)
 		* ROI file for rosette segmentations (roi.txt)
@@ -61,7 +61,7 @@ The repository includes:
 		* 10 frames of leaf masks of Plant 0
 		* 10 frames of tracked leaf masks of Plant 0
 		* ROI file for rosette segmentations (roiLeaf.txt)
-	b) Results:
+	* Results:
 		* Adaptive light source vectors (AdaptiveLSV_r2048x2048_ss8.8x8.8_fl16.npz)
 		* 10 frames of rosette masks of Plant 0
 		* 10 frames of leaf masks of Plant 0
@@ -71,8 +71,8 @@ The repository includes:
 6. Install [Arduino 1.8.8 IDE](https://www.arduino.cc/en/Main/Software)
 7. Install Arduino MKRZero compatible drivers (Arduino IDE -> Tools -> Board -> Boards Manager -> Arduino SAMD Boards (32-bits ARM Cortex-M0+) tested version 1.6.12)
 		
-## Getting Started
-# psgui3
+# Getting Started
+## psgui3
 After a successful installation of dependency software, you may run any of the supplied GUI-based software. The easiest way to investigate the PS data is to run 'psgui3.py' GUI where the GUI displays an integrated 3D surface using Frankot and Chellappa (1988) proposed integration method (left), surface normal directions (right) in x (top-left), y (top-right) and z (bottom-left) directions and albedo image (bottom-right). Click on 'Process from archive' and navigate to the provided raw PS data acquisitions in TestData/RawData directory.
 
 PS data can be also acquired using 'psgui3.py' script:
@@ -87,7 +87,7 @@ PS data can be also acquired using 'psgui3.py' script:
 
 ![PS-Plant Framework](assets/PSGUI.png)
 
-# GenerateAdaptiveLSVGUI 
+## GenerateAdaptiveLSVGUI 
 This script displays a GUI to generate adaptive light source vectors that will be used to generate more accurate 3D representations using PS.
 	
 In the GUI you have to enter:
@@ -101,7 +101,7 @@ Generated light source vectors are available in the provided TestData/Results fo
 
 ![PS-Plant Framework](assets/GenerateAdaptive.png)
 
-# BatchProcessRawSessionsGUI
+## BatchProcessRawSessionsGUI
 This is the GUI for processing raw files and generating PS outputs that are stored in SNZShadowImAndAlbedo_adaptiveLS.npz files. 
 
 In the GUI user has to enter:
@@ -114,7 +114,7 @@ The user may run the script on the provided PS-Plant data acquisitions, however,
 
 ![PS-Plant Framework](assets/GenerateNPZ.png)
 
-# MaskGenGUI
+## MaskGenGUI
 This script displays a GUI to generate rosette masks for the chosen PS-Plant acquisition sessions and desired region of interests (ROI). The GUI allows user to select parameters for better segmentation (threshold, min area, filter size).
 	
 In the GUI you have to enter:
@@ -130,7 +130,7 @@ Example roi.txt is provided in TestData for the directories in TestData/RawData 
 
 ![PS-Plant Framework](assets/MaskGenerator.png)
 	
-# LeafSegmentationGUI
+## LeafSegmentationGUI
 This is the GUI for generating individual leaf segmentations. 
 
 In the GUI, user has to enter:
@@ -142,8 +142,8 @@ The raw data is provided in TestData/RawData/Cropped directory. Example roiLeaf.
 
 ![PS-Plant Framework](assets/GenerateLeafMasks.png)
 
-# TrackingGUI
-This is the GUI for tracking leaf movements. 
+## TrackingGUI
+This is the GUI for tracking leaf instances across the time-series images of Arabidopsis. 
 
 In the GUI you have to enter:
 	- Path to the untracked masks;
@@ -158,7 +158,7 @@ Raw data is provided in TestData/RawData/LeafMasks directory or the user generat
 
 ![PS-Plant Framework](assets/GenerateLeafTrackings.png)
 
-# GenerateResultsGUI
+## GenerateResultsGUI
 This is the GUI for extracting rosette and leaf-level growth data from either rosette or leaf masks. 
 
 In the GUI you have to enter:
