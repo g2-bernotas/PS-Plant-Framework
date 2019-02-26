@@ -1,7 +1,7 @@
 ## PS-Plant data processing software 
 For "A photometric stereo-based 3D imaging system using computer vision and deep learning for tracking plant growth" paper.
 
-![PS-Plant Framework](assets/PS-PlantFramework.pdf)
+![PS-Plant Framework](assets/PS-PlantFramework.png)
 
 This is an implementation of PS-Plant software in Python 3.5. The software has six components that is the backbone for processing data acquired using PS-Plant plant phenotyping system. Each component runs as a GUI enabling the user to interact with the software. The components are named as follows:
 
