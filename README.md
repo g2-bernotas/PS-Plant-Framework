@@ -48,8 +48,8 @@ The repository includes:
 	pip install -r requirements.txt
 	```
 3. Download pip unavailable dependencies:
-	a) FlyCapture 2.13.3.31 SDK (Grasshopper3 GS3-U3-41C6NIR-C)
-	b) PyCapture 2.11.425 (Grasshopper3 GS3-U3-41C6NIR-C)
+	* FlyCapture 2.13.3.31 SDK (Grasshopper3 GS3-U3-41C6NIR-C)
+	* PyCapture 2.11.425 (Grasshopper3 GS3-U3-41C6NIR-C)
 4. Install pip unavailable dependencies
 5. Download test [data](https://bit.ly/2IBRzKJ), which includes:
 	* RawData
