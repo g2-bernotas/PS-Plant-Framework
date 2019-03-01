@@ -215,6 +215,14 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
         plt.subplot(1,2,2); plt.imshow(mask);
         plt.show();
         
+
+    def normaliseRange(self, x):
+        if(np.nanmax(x)-np.nanmin(x) != 0):
+            normData = (x-np.nanmin(x))/(np.nanmax(x)-np.nanmin(x)) * 255;
+            return normData
+        else:
+            return np.array(x)
+    
     def process(self):
         if not os.path.exists(self.outputDir):
             qm = QtGui.QMessageBox
@@ -222,6 +230,15 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
             
             if ret == qm.Yes:
                 os.makedirs(self.outputDir)
+            
+        if not os.path.exists(os.path.join(self.outputDir, "CroppedAlbedo")):
+            os.makedirs(os.path.join(self.outputDir, "CroppedAlbedo"))
+            
+        if not os.path.exists(os.path.join(self.outputDir, "CroppedGrayscale")):
+            os.makedirs(os.path.join(self.outputDir, "CroppedGrayscale"))
+            
+        if not os.path.exists(os.path.join(self.outputDir, "CroppedComposite")):
+            os.makedirs(os.path.join(self.outputDir, "CroppedComposite"))
             
         plantNos = [int(i) for i in self.edtPlants.text().split(',')]
         if not plantNos:
@@ -258,7 +275,8 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
                     if progress.wasCanceled():
                         break;
                     print('Processing Plant: {}, {}'.format(p, pth));
-                    A, z, snIm, shadowIm=loadPlant(pth, p, self.roiFile) 
+                    
+                    A, z, snIm, shadowIm=loadPlant(pth, p, self.roiFile)
                     shadowIm, minImg, maxImg = ps.shadowImageFromPth(pth)
                     rois=np.loadtxt(self.roiFile, dtype=np.uint16) 
                     roi=rois[p]
@@ -269,8 +287,39 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
                     mask = segmenter.segmentImage()
                     mask.dtype = 'uint8'
                     
+                    data = np.load(os.path.join(pth, "SNZShadowImAndAlbedo_adaptiveLS.npz"))
+                    snIm = data['snIm']
+                    A = data['A']
+                    A = self.normaliseRange(A)
+                    snIm = self.normaliseRange(snIm)
+                    
+                    im=glob.glob(os.path.join(pth,'*im[0-9].bmp'))
+                    ims = []
+                    for i,idx in enumerate(im):
+                        ims.append(cv2.imread(idx, 0))
+                    
+                    arr = np.zeros((np.size(ims[0], 1), np.size(ims[0], 0)),np.float)
+                    for im in ims:
+                        arr=arr+im/(i + 1)
+                        
+                    composite = np.zeros((np.size(ims[0], 1), np.size(ims[0], 0), 3))
+                    composite[..., 0] = snIm[:,:,0]
+                    composite[..., 1] = snIm[:,:,1]
+                    composite[..., 2] = A
+                    
+                    arr = self.normaliseRange(arr)
+                    
                     fname = '{}_{}_mask.png'.format(p, os.path.basename(pth))
                     cv2.imwrite(os.path.join(self.outputDir, fname), mask*255)
+                    
+                    fname = '{}_{}_albedo.png'.format(p, os.path.basename(pth))
+                    cv2.imwrite(os.path.join(os.path.join(self.outputDir, "CroppedAlbedo"), fname), self.normaliseRange(A)[roi[1]:roi[1]+roi[3], roi[0]:roi[0]+roi[2]])
+                    
+                    fname = '{}_{}_grayscale.png'.format(p, os.path.basename(pth))
+                    cv2.imwrite(os.path.join(os.path.join(self.outputDir, "CroppedGrayscale"), fname), arr[roi[1]:roi[1]+roi[3], roi[0]:roi[0]+roi[2]])
+                    
+                    fname = '{}_{}_composite.png'.format(p, os.path.basename(pth))
+                    cv2.imwrite(os.path.join(os.path.join(self.outputDir, "CroppedComposite"), fname), composite[roi[1]:roi[1]+roi[3], roi[0]:roi[0]+roi[2]])
             
             progress.setValue(total2Proc);
             qm = QtGui.QMessageBox
