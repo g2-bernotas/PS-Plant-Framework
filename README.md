@@ -36,8 +36,9 @@ The repository includes:
 * Keras 2.2.0
 * visvis
 * imgaug
+* pyserial
 * IPython[all]
-* PyQT4
+* PyQt4
 * [FlyCapture 2.13.3.31 SDK](https://www.ptgrey.com/support/downloads)
 * [PyCapture 2.11.425](https://www.ptgrey.com/support/downloads)
 
