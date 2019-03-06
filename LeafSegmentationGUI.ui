@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BatchProcessRawSessions</class>
- <widget class="QMainWindow" name="BatchProcessRawSessions">
+ <class>LeafSegmentationGUI</class>
+ <widget class="QMainWindow" name="LeafSegmentationGUI">
   <property name="windowModality">
    <enum>Qt::NonModal</enum>
   </property>
@@ -17,7 +17,7 @@
    <enum>Qt::NoFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>Batch Process Raw Sessions</string>
+   <string>Leaf Segmentation GUI</string>
   </property>
   <property name="windowIcon">
    <iconset>
