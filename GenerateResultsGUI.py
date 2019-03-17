@@ -273,15 +273,13 @@ class GenerateResultsGUI(QtGui.QMainWindow, Ui_MainWindow):
         map = np.array(palette).reshape(num_colours, 3) / max_val
         
         uLabels = np.unique(indexed)
-        maxLabel = uLabels.max()
         indexedNew = np.zeros(indexed.shape) - 1
         
         for u in uLabels:
-            origU = u
-            rgb = map[u]
-            if not tuple(rgb) in labelDict:
-                if u in list(labelDict.values()):
-                    maxLabel = maxLabel+1
+            rgb = map[u] 
+            if not tuple(rgb) in labelDict: 
+                if u in list(labelDict.values()): 
+                    maxLabel = np.max(list(labelDict.values())) + 1    
                     u = maxLabel
                 
                 labelDict.update({tuple(rgb) : u})
@@ -364,8 +362,6 @@ class GenerateResultsGUI(QtGui.QMainWindow, Ui_MainWindow):
         areaOfOnePixel = h*v
         plt.close('all')
         for i, l in enumerate(leaves):
-        
-    
             if not np.any(bladeMasks[i]):
                 continue
             Nx = l[:,:,0]
@@ -403,8 +399,14 @@ class GenerateResultsGUI(QtGui.QMainWindow, Ui_MainWindow):
             petioleMask=remove_small_objects(petioleMask, 32)
             
             petioleRP = regionprops(petioleMask.astype(np.int32))
-            leafRP.petioleWidth2D = petioleRP[0].minor_axis_length * h
-            leafRP.petioleLength2DRP = petioleRP[0].major_axis_length * v
+            
+            # if visible:
+            if petioleRP != []:
+                leafRP.petioleWidth2D = petioleRP[0].minor_axis_length * h
+                leafRP.petioleLength2DRP = petioleRP[0].major_axis_length * v
+            else:
+                leafRP.petioleWidth2D = 0
+                leafRP.petioleLength2DRP = 0
             
             if np.any(petioleMask):
                 leafRP.petioleMask = petioleMask.copy()
@@ -465,15 +467,17 @@ class GenerateResultsGUI(QtGui.QMainWindow, Ui_MainWindow):
             
             rp = regionprops(leafMask.astype(int))
             if rp != []:
-                if rp[0].area < 1500:
-                    disksize = 3
-                elif rp[0].area < 2400:
+                if rp[0].area < 1000:
                     disksize = 7
-                else:
+                if rp[0].area < 1500:
+                    disksize = 9
+                elif rp[0].area < 2400:
                     disksize = 11
+                else:
+                    disksize = 15
                     
                 selem = disk(disksize) 
-                bladeMask = binary_opening(leafMask, selem)            
+                bladeMask = binary_opening(leafMask, selem)
                 
                 bladeMasks.append(bladeMask.copy())
             
@@ -514,7 +518,8 @@ class GenerateResultsGUI(QtGui.QMainWindow, Ui_MainWindow):
         fname = os.path.join(self.outputDir, '{}_{}.png'.format(plantNo, session))
         f = plt.figure()
         values = np.unique(labelMask.ravel())
-        im = plt.imshow(labelMask);
+        print("{}, {}".format(session, len(values)))
+        im = plt.imshow(labelMask, cmap='jet');
       
         values = values[values>0]
         
@@ -522,7 +527,7 @@ class GenerateResultsGUI(QtGui.QMainWindow, Ui_MainWindow):
         patches = [ mpatches.Patch(color=colors[i], label="Leaf {l}".format(l=values[i]) ) for i in range(len(values)) ]
         plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0. )
         plt.axis('off')
-        plt.show();
+        #plt.show();
         labelIm = self.cvtFig2Numpy(f)
         plt.close(f)
         cv2.imwrite(fname, cv2.cvtColor(labelIm, cv2.COLOR_RGBA2BGRA));
@@ -623,7 +628,6 @@ class GenerateResultsGUI(QtGui.QMainWindow, Ui_MainWindow):
                         mask =cv2.cvtColor( mask, cv2.COLOR_RGB2GRAY )
                         mask = mask.astype(bool)
                     
-                    ##
                     Nx = snIm[:,:,0]
                     Ny = snIm[:,:,1]
                     Nz = snIm[:,:,2]
