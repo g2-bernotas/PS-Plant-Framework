@@ -186,9 +186,9 @@ class LeafSegmentationGUI(QtGui.QMainWindow, Ui_MainWindow):
                     finalMask[overlap > 0] = np.max(alpha)
                     
                 for j in range(0,  np.size(r['masks'],2)):
-                    finalMask2[finalMask == (j + 1), 0] =  cmap[j][0]
-                    finalMask2[finalMask == (j + 1), 1] =  cmap[j][1]
-                    finalMask2[finalMask == (j + 1), 2] =  cmap[j][2]
+                    finalMask2[finalMask == (j + 1), 0] =  self.cmap[j][0]
+                    finalMask2[finalMask == (j + 1), 1] =  self.cmap[j][1]
+                    finalMask2[finalMask == (j + 1), 2] =  self.cmap[j][2]
                 
                 name = idx.split("\\")[-1].split(self.Type)[0]
                 savePath = self.saveDir + "\\{}mask.png".format(name)
