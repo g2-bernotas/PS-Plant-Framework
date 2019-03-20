@@ -36,7 +36,7 @@ import matplotlib.pyplot as plt
 from MaskSegmenterBasic import MaskSegmenterBasic
 
 iniFilename='.maskgen.ini'
-qtCreatorFile = "MaskGen.ui" 
+qtCreatorFile = "MaskGen2.ui" 
     
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
  
@@ -48,6 +48,10 @@ DEFAULT_PLANTNOS = '0,2'
 DEFAULT_SEGPARAM1 = '70'
 DEFAULT_SEGPARAM2 = '300'
 DEFAULT_SEGPARAM3 = '11'
+
+DEFAULT_ALBEDO = False
+DEFAULT_COMPOSITE = False
+DEFAULT_GRAYSCALE = True
 
 class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -67,6 +71,10 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.segParam3 = DEFAULT_SEGPARAM3
         self.refreshCombos = True 
         
+        self.storeAlbedo = DEFAULT_ALBEDO
+        self.storeComposite = DEFAULT_COMPOSITE
+        self.storeGrayscale = DEFAULT_GRAYSCALE
+        
         self.loadFromIniFile() 
         
         # Buttons
@@ -79,7 +87,12 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.rdoNIR.clicked.connect(self.updateLSType)
         self.rdoVISNIR.clicked.connect(self.updateLSType)
         self.edtPlants.textChanged.connect(self.updatePlantNos)
-        
+         
+         
+        self.cbCropAlbedo.stateChanged.connect(self.updateAlbedo)
+        self.cbCropComposite.stateChanged.connect(self.updateComposite)
+        self.cbCropGrayscale.stateChanged.connect(self.updateGrayscale)
+         
         self.initVars()
         
         self.cmbStartSess.currentIndexChanged.connect(self.startSessChanged)
@@ -103,6 +116,10 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
                 self.segParam2 = config.get('SegBasic', 'param2')
                 self.segParam3 = config.get('SegBasic', 'param3')
                 
+                self.storeAlbedo = config.get('MaskGen', 'storeAlbedo')
+                self.storeComposite = config.get('MaskGen', 'storeComposite')
+                self.storeGrayscale = config.get('MaskGen', 'storeGrayscale')
+                
             except: 
                 pass
         
@@ -121,6 +138,10 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
         config.set('SegBasic', 'param2', self.segParam2)
         config.set('SegBasic', 'param3', self.segParam3)
         
+        config.set('MaskGen', 'storeAlbedo', str(int(self.storeAlbedo)))
+        config.set('MaskGen', 'storeComposite', str(int(self.storeComposite)))
+        config.set('MaskGen', 'storeGrayscale', str(int(self.storeGrayscale)))
+        
         with open(iniFilename, 'w') as configfile:
             config.write(configfile)
         
@@ -128,6 +149,11 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
         self.edtRootDir.setText(self.rootDir)
         self.edtROIPath.setText(self.roiFile)
         self.edtOutputDir.setText(self.outputDir)
+        
+        self.cbCropAlbedo.setChecked(int(self.storeAlbedo))
+        self.cbCropComposite.setChecked(int(self.storeComposite))
+        self.cbCropGrayscale.setChecked(int(self.storeGrayscale))
+        
         if self.refreshCombos:
             LSType = self.getLSType()
             dirs = [os.path.basename(os.path.normpath(x)) for x in glob.glob(os.path.join(self.rootDir, LSType))]
@@ -191,6 +217,15 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
     def endSessChanged(self):
        self.endDir = self.cmbEndSess.currentText()
        
+    def updateAlbedo(self):
+        self.storeAlbedo = self.cbCropAlbedo.isChecked()
+        
+    def updateComposite(self):
+        self.storeComposite = self.cbCropComposite.isChecked()
+        
+    def updateGrayscale(self):
+        self.storeGrayscale = self.cbCropGrayscale.isChecked()
+       
     def preview(self):
         previewFolder = os.path.normpath(os.path.join(self.rootDir, str(self.cmbPreviewSess.currentText())))
         plantNo = int(self.edtPreviewPlant.text())
@@ -230,15 +265,18 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
             
             if ret == qm.Yes:
                 os.makedirs(self.outputDir)
-            
-        if not os.path.exists(os.path.join(self.outputDir, "CroppedAlbedo")):
-            os.makedirs(os.path.join(self.outputDir, "CroppedAlbedo"))
-            
-        if not os.path.exists(os.path.join(self.outputDir, "CroppedGrayscale")):
-            os.makedirs(os.path.join(self.outputDir, "CroppedGrayscale"))
-            
-        if not os.path.exists(os.path.join(self.outputDir, "CroppedComposite")):
-            os.makedirs(os.path.join(self.outputDir, "CroppedComposite"))
+        
+        if self.cbCropAlbedo.isChecked():
+            if not os.path.exists(os.path.join(self.outputDir, "CroppedAlbedo")):
+                os.makedirs(os.path.join(self.outputDir, "CroppedAlbedo"))
+        
+        if self.cbCropGrayscale.isChecked():    
+            if not os.path.exists(os.path.join(self.outputDir, "CroppedGrayscale")):
+                os.makedirs(os.path.join(self.outputDir, "CroppedGrayscale"))
+        
+        if self.cbCropComposite.isChecked():    
+            if not os.path.exists(os.path.join(self.outputDir, "CroppedComposite")):
+                os.makedirs(os.path.join(self.outputDir, "CroppedComposite"))
             
         plantNos = [int(i) for i in self.edtPlants.text().split(',')]
         if not plantNos:
@@ -312,14 +350,17 @@ class MaskGenGUI(QtGui.QMainWindow, Ui_MainWindow):
                     fname = '{}_{}_mask.png'.format(p, os.path.basename(pth))
                     cv2.imwrite(os.path.join(self.outputDir, fname), mask*255)
                     
-                    fname = '{}_{}_albedo.png'.format(p, os.path.basename(pth))
-                    cv2.imwrite(os.path.join(os.path.join(self.outputDir, "CroppedAlbedo"), fname), self.normaliseRange(A)[roi[1]:roi[1]+roi[3], roi[0]:roi[0]+roi[2]])
+                    if self.cbCropAlbedo.isChecked():
+                        fname = '{}_{}_albedo.png'.format(p, os.path.basename(pth))
+                        cv2.imwrite(os.path.join(os.path.join(self.outputDir, "CroppedAlbedo"), fname), self.normaliseRange(A)[roi[1]:roi[1]+roi[3], roi[0]:roi[0]+roi[2]])
                     
-                    fname = '{}_{}_grayscale.png'.format(p, os.path.basename(pth))
-                    cv2.imwrite(os.path.join(os.path.join(self.outputDir, "CroppedGrayscale"), fname), arr[roi[1]:roi[1]+roi[3], roi[0]:roi[0]+roi[2]])
+                    if self.cbCropGrayscale.isChecked():
+                        fname = '{}_{}_grayscale.png'.format(p, os.path.basename(pth))
+                        cv2.imwrite(os.path.join(os.path.join(self.outputDir, "CroppedGrayscale"), fname), arr[roi[1]:roi[1]+roi[3], roi[0]:roi[0]+roi[2]])
                     
-                    fname = '{}_{}_composite.png'.format(p, os.path.basename(pth))
-                    cv2.imwrite(os.path.join(os.path.join(self.outputDir, "CroppedComposite"), fname), composite[roi[1]:roi[1]+roi[3], roi[0]:roi[0]+roi[2]])
+                    if self.cbCropComposite.isChecked():
+                        fname = '{}_{}_composite.png'.format(p, os.path.basename(pth))
+                        cv2.imwrite(os.path.join(os.path.join(self.outputDir, "CroppedComposite"), fname), composite[roi[1]:roi[1]+roi[3], roi[0]:roi[0]+roi[2]])
             
             progress.setValue(total2Proc);
             qm = QtGui.QMessageBox
