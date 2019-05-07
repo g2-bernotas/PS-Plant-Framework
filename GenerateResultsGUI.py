@@ -467,9 +467,11 @@ class GenerateResultsGUI(QtGui.QMainWindow, Ui_MainWindow):
             
             rp = regionprops(leafMask.astype(int))
             if rp != []:
-                if rp[0].area < 1000:
+                if rp[0].area < 300:
+                    disksize = 5
+                elif rp[0].area < 1000:
                     disksize = 7
-                if rp[0].area < 1500:
+                elif rp[0].area < 1500:
                     disksize = 9
                 elif rp[0].area < 2400:
                     disksize = 11
