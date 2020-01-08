@@ -38,7 +38,7 @@ The repository includes:
 * imgaug
 * pyserial
 * IPython[all]
-* PyQt4
+* [PyQt4](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4)
 * [FlyCapture 2.13.3.31 SDK](https://www.ptgrey.com/support/downloads)
 * [PyCapture 2.11.425](https://www.ptgrey.com/support/downloads)
 
@@ -51,6 +51,7 @@ The repository includes:
 3. Download pip unavailable dependencies:
 	* FlyCapture 2.13.3.31 SDK (Grasshopper3 GS3-U3-41C6NIR-C)
 	* PyCapture 2.11.425 (Grasshopper3 GS3-U3-41C6NIR-C)
+	* PyQt4 4.11.4 (PyQt4-4.11.4-cp35-cp35m-win_amd64.whl)
 4. Install pip unavailable dependencies
 5. Download test [data](https://bit.ly/2IBRzKJ), which includes:
 	* RawData
