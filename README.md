@@ -43,6 +43,9 @@ The repository includes:
 * [PyCapture 2.11.425](https://www.ptgrey.com/support/downloads)
 
 # Installation 
+
+Installation guidance is provided in a [YouTube tutorial](https://www.youtube.com/watch?v=7q6ZnJvhx6I).
+
 1. Clone this reporitory
 2. Install dependencies
 	``` bash
@@ -72,10 +75,6 @@ The repository includes:
 
 6. Install [Arduino 1.8.8 IDE](https://www.arduino.cc/en/Main/Software)
 7. Install Arduino MKRZero compatible drivers (Arduino IDE -> Tools -> Board -> Boards Manager -> Arduino SAMD Boards (32-bits ARM Cortex-M0+) tested version 1.6.12)
-
-# Alternative Installation
-
-Alternative installation guidance is provided in a [YouTube tutorial](https://www.youtube.com/watch?v=7q6ZnJvhx6I).
 		
 # Getting Started
 ## psgui3
