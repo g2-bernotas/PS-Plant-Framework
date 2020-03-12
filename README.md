@@ -16,7 +16,7 @@ The repository includes:
 * Source code for PS-Plant data analysis using python-based GUI applications (Arduino (*.ino) and Python (*.py) scripts, and Qt GUI applications (*.ui))
 * Modified Mask R-CNN code for Arabidopsis leaf segmentation (adapted from [Matterport](https://github.com/matterport/Mask_RCNN), original [Mask R-CNN paper](https://arxiv.org/pdf/1703.06870.pdf))
 * Requirements.txt file listing the required packages for successfully running the PS-Plant software
-* This repository is also supplemented with [test data](https://bit.ly/2IBRzKJ):
+* This repository is also supplemented with [test data](https://bit.ly/39FwnN7):
 	* Pre-trained Mask R-CNN weights for leaf segmentation using grayscale images
 	* PS-Plant data acquisitions (10) of Arabidopsis plants
 	* Results expected after running the software with the provided data
