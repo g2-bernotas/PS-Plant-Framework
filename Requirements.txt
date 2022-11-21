@@ -5,7 +5,7 @@ scikit-image==0.14.1
 scipy==1.1.0
 pandas==0.23.4
 trackpy==0.4.1
-tensorflow-gpu==1.15.2
+tensorflow-gpu==2.9.3
 keras==2.2.0
 visvis==1.10.0
 imgaug==0.2.6
